@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+#include <cassert>
+#include <cctype>
+#include <algorithm>
+using namespace std;
+int main() {
+    string card_number;
+    cout << "номер карты = ";
+    getline(cin, card_number);
+    if (card_number.empty()) {
+        card_number = "5062 8212 3456 7892";
+    }
+    card_number.erase(remove_if(card_number.begin(), card_number.end(), ::isspace), card_number.end());
+    unsigned cnt = 1, n = 0, sum = 0;
+    for (string::reverse_iterator it = card_number.rbegin();
+        it != card_number.rend();
+        ++it, ++cnt) {
+        assert(*it >= '0' && *it <= '9');
+        n = *it - '0';
+        if (cnt%2==0){
+            if (n*2>9){
+                n = (n*2)-9;    
+            }
+            else {
+                n=n*2;
+            }
+            
+        }
+        sum += n;
+    }
+
+    cout
+        << "контрольная сумма (" << sum
+        << ") для карты " << card_number
+        << (sum%10 ? " НЕ " : " ") << "верна"
+        << endl;
+}
